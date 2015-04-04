@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title> Tic Tac Toe </title>
+        <link rel="stylesheet" href="tictactoe.css">
+    </head>
+    <body>
+        <!-- ko with: CurrentGame -->
+            <div class="status">
+                <!-- ko if: !HasError() -->
+                    <!-- ko if: GameStatus.Current() === GameStatus.WaitingForGame -->
+                        Waiting for another player to join...
+                    <!-- /ko -->
+                    <!-- ko if: GameStatus.Current() === GameStatus.Started -->
+                        Game started. You're playing as
+                        <span data-bind="text: Role() + '.'"></span><br />
+                        <!-- ko if: Move.Current() === Move.Mine -->
+                            It's your move.
+                        <!-- /ko -->
+                        <!-- ko if: Move.Current() === Move.Theirs -->
+                            Waiting for other player to move...
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: GameStatus.Current() === GameStatus.Complete -->
+                        <!-- ko if: Winner.Actual() === Winner.Me -->
+                            You won!
+                        <!-- /ko -->
+                        <!-- ko if: Winner.Actual() === Winner.Them -->
+                            You lost. :(
+                        <!-- /ko -->
+                        <!-- ko if: Winner.Actual() === Winner.Draw -->
+                            It's a draw.
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: GameStatus.Current() === GameStatus.AbruptEnd -->
+                        The other player left abruptly. Your game is over. Sorry.
+                    <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko if: HasError -->
+                    There was an error reaching the server. Please try playing again.
+                <!-- /ko -->
+            </div>
+            <!-- ko if: GameStatus.Current() !== GameStatus.WaitingForGame -->
+                <div class="board">
+                    <div class="square square-0"
+                         data-bind="text: Board[0], click: MoveTo(0)"></div>
+                    <div class="square square-1"
+                         data-bind="text: Board[1], click: MoveTo(1)"></div>
+                    <div class="square square-2"
+                         data-bind="text: Board[2], click: MoveTo(2)"></div>
+                    <div class="square square-3"
+                         data-bind="text: Board[3], click: MoveTo(3)"></div>
+                    <div class="square square-4"
+                         data-bind="text: Board[4], click: MoveTo(4)"></div>
+                    <div class="square square-5"
+                         data-bind="text: Board[5], click: MoveTo(5)"></div>
+                    <div class="square square-6"
+                         data-bind="text: Board[6], click: MoveTo(6)"></div>
+                    <div class="square square-7"
+                         data-bind="text: Board[7], click: MoveTo(7)"></div>
+                    <div class="square square-8"
+                         data-bind="text: Board[8], click: MoveTo(8)"></div>
+                    <div class="line horizontal horizontal-0"
+                         data-bind="visible: WinningLine([0, 1, 2])"></div>
+                    <div class="line horizontal horizontal-1"
+                         data-bind="visible: WinningLine([3, 4, 5])"></div>
+                    <div class="line horizontal horizontal-2"
+                         data-bind="visible: WinningLine([6, 7, 8])"></div>
+                    <div class="line vertical vertical-0"
+                         data-bind="visible: WinningLine([0, 3, 6])"></div>
+                    <div class="line vertical vertical-1"
+                         data-bind="visible: WinningLine([1, 4, 7])"></div>
+                    <div class="line vertical vertical-2"
+                         data-bind="visible: WinningLine([2, 5, 8])"></div>
+                    <div class="line diagonal diagonal-0"
+                         data-bind="visible: WinningLine([0, 4, 8])"></div>
+                    <div class="line diagonal diagonal-1"
+                         data-bind="visible: WinningLine([2, 4, 6])"></div>
+                </div>
+            <!-- /ko -->
+            <!-- ko if: HasError() || GameStatus.Current() !== GameStatus.Started
+                            && GameStatus.Current() !== GameStatus.WaitingForGame -->
+                <div class="play-again">
+                    <button data-bind="click: $parent.StartNewGame">
+                        Play again...
+                    </button>
+                </div>
+            <!-- /ko -->
+        <!-- /ko -->
+        <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+        <script src="tictactoe.js"></script>
+    </body>
+</html>
+
