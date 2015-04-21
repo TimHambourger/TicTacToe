@@ -3,10 +3,11 @@ var finalHandler = require('finalhandler'),
     serveStatic = require('serve-static'),
     ws = require('ws'),
     path = require('path'),
-    programArgs = require('commander');
+    programArgs = require('commander'),
+    pjson = require('./package.json');
 
 programArgs
-    .version('0.0.1')
+    .version(pjson.version)
     .description('Start a TicTacToe web socket server')
     .option('-p, --port <port>', 'listen at this port. Default is 8080.', 8080)
     .option('-o, --origins <origins>', 'a comma separated list of fully-qualified allowed origins. Defaults to \'http://localhost:<port>\'.', function (val) { return val.split(','); }, [])
@@ -66,7 +67,7 @@ var TicTacToePositionValues = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0
         abruptEnd: 'game-abrupt-end'
     };
 
-var serveStaticFile = serveStatic(path.join(__dirname, '../client'));
+var serveStaticFile = serveStatic(path.join(__dirname, 'public'));
 
 var httpServer = http.createServer(function (req, res) {
     serveStaticFile(req, res, function (err) {
